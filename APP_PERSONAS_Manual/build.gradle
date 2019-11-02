@@ -1,0 +1,35 @@
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+sourceCompatibility = 1.8
+
+repositories {
+    maven {
+        url 'https://artifactory.apps.bancolombia.com/maven-bancolombia'
+    }
+}
+buildscript {
+    repositories {
+        maven {
+            url 'https://artifactory.apps.bancolombia.com/maven-bancolombia'
+        }
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.20")
+    }
+}
+
+ext{
+    serenityCucumberVersion = '1.9.20'
+}
+
+dependencies {
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+    testCompile 'org.slf4j:slf4j-simple:1.7.25'
+    implementation(group: 'co.com.bancolombia.certificacion', name: 'manualtestSerenityBDD', version: '1.0.0')
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
+}
+
+gradle.startParameter.continueOnFailure = true

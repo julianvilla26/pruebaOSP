@@ -1,0 +1,51 @@
+repositories {
+    maven { url "https://artifactory.apps.bancolombia.com/maven-bancolombia/" }
+    maven { url "https://artifactory.apps.bancolombia.com/jcenter/" }
+    maven { url "https://artifactory.apps.bancolombia.com/common-maven/" }
+    maven { url "https://artifactory.apps.bancolombia.com/global-bancolombia/" }
+}
+
+buildscript {
+    repositories {
+        maven { url "https://artifactory.apps.bancolombia.com/maven-bancolombia/" }
+        maven { url "https://artifactory.apps.bancolombia.com/jcenter/" }
+        maven { url "https://artifactory.apps.bancolombia.com/common-maven/" }
+        maven { url "https://artifactory.apps.bancolombia.com/global-bancolombia/" }
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:1.9.45")
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'maven'
+apply plugin: 'net.serenity-bdd.aggregator'
+
+group 'co.com.bancolombia'
+version '1.0'
+
+sourceCompatibility = 1.8
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = "UTF-8"
+
+dependencies {
+    implementation "co.com.bancolombia.certificacion:backend-iseries:2.5.3"
+    implementation "com.codoid.products:fillo:1.18"
+    implementation "org.assertj:assertj-core:3.11.1"
+    implementation "org.slf4j:slf4j-simple:1.7.25"
+    implementation "org.apache.logging.log4j:log4j-api:2.6.1"
+    implementation "org.apache.logging.log4j:log4j-core:2.6.1"
+
+    implementation "net.serenity-bdd:serenity-junit:1.9.45"
+    implementation "net.serenity-bdd:serenity-core:1.9.45"
+    implementation "net.serenity-bdd:serenity-cucumber:1.9.15"
+    implementation "net.serenity-bdd:serenity-screenplay:1.9.45"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:1.9.45"
+
+    testImplementation  "org.assertj:assertj-core:3.9.0"
+    testImplementation  "org.hamcrest:hamcrest-core:1.3"
+
+   	compile group: 'co.com.bancolombia.certificacion', name: 'conexion-bd', version: '4.1.0'
+    compile group: 'io.rest-assured', name: 'rest-assured', version: '3.2.0'
+}
+gradle.startParameter.continueOnFailure = true

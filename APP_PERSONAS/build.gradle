@@ -1,0 +1,81 @@
+group 'AW1059001_APPSucursalVirtualPersonas_Test'
+version '1.0-SNAPSHOT'
+
+repositories {
+    maven {url "http://cdv4.todo1.com/nexus/content/groups/public/"}
+    /*maven { url "https://artifactory.apps.bancolombia.com/maven-bancolombia/" }
+    maven { url "https://artifactory.apps.bancolombia.com/jcenter/" }
+    maven { url "https://artifactory.apps.bancolombia.com/common-maven/" }
+    maven { url "https://artifactory.apps.bancolombia.com/global-bancolombia/" }*/
+}
+
+buildscript {
+    repositories {
+        maven {url "http://cdv4.todo1.com/nexus/content/groups/public/"}
+        /*maven { url "https://artifactory.apps.bancolombia.com/maven-bancolombia/" }
+        maven { url "https://artifactory.apps.bancolombia.com/jcenter/" }
+        maven { url "https://artifactory.apps.bancolombia.com/common-maven/" }
+        maven { url "https://artifactory.apps.bancolombia.com/global-bancolombia/" }*/
+    }
+    dependencies {
+        classpath("net.serenity-bdd:serenity-gradle-plugin:2.0.70")
+    }
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'maven'
+    apply plugin: 'idea'
+    apply plugin: 'net.serenity-bdd.aggregator'
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+}
+
+ext {
+    serenityVersion = '2.0.70'
+    serenityCucumberVersion = '1.9.45'
+}
+
+dependencies {
+    implementation 'co.com.bancolombia.certificacion:backend-iseries:2.5.3'
+    implementation 'co.com.bancolombia.certificacion:conexion-bd:4.1.0'
+    implementation "net.serenity-bdd:serenity-screenplay:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-screenplay-webdriver:$rootProject.ext.serenityVersion"
+    implementation "net.serenity-bdd:serenity-cucumber:$rootProject.ext.serenityCucumberVersion"
+
+    implementation group: 'io.appium', name: 'java-client', version: '7.0.0'
+    implementation group: 'org.apache.poi', name: 'poi', version: '3.17'
+    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '3.17'
+    implementation group: 'com.codoid.products', name: 'fillo', version: '1.18'
+    implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.7'
+    implementation group: 'io.rest-assured', name: 'rest-assured', version: '3.2.0'
+
+    implementation 'org.apache.commons:commons-lang3:3.8'
+    implementation 'org.apache.logging.log4j:log4j-api:2.6.1'
+    implementation 'org.apache.logging.log4j:log4j-core:2.6.1'
+    implementation 'com.google.code.gson:gson:2.8.5'
+
+    testImplementation 'junit:junit:4.12'
+    testImplementation 'org.assertj:assertj-core:3.6.2'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.7'
+    testImplementation "net.serenity-bdd:serenity-core:$rootProject.ext.serenityVersion"
+    testImplementation "net.serenity-bdd:serenity-junit:$rootProject.ext.serenityVersion"
+}
+
+/*tasks.withType(Test){
+    systemProperty 'properties', System.getProperty('properties')
+    systemProperty 'serenity.outputDirectory', System.getProperty('serenity.outputDirectory')
+    systemProperty 'binResultsDir', System.getProperty('binResultsDir')
+    systemProperties = System.properties
+    maxParallelForks = Runtime.runtime.availableProcessors()
+}*/
+
+tasks.withType(Test) {
+    systemProperty "file.encoding", "UTF-8"
+}
+
+test {
+    systemProperty 'properties', System.getProperty('properties')
+}
+
+gradle.startParameter.continueOnFailure = true
